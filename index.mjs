@@ -9,11 +9,11 @@ import { central, db1, db2, db3, vault } from "./databases.mjs";
   };
   try{
     //determine which database to use for the give ID
-     const dbName = await central(1);   
-    console.log(dbName)
-    if (!dbs[dbName]) throw new Error (`Database ${dbName} not found`);
+     const valueReturnedFromCentral = await central(id);   
+ 
+    if (!dbs[valueReturnedFromCentral]) throw new Error (`Database ${valueReturnedFromCentral} not found`);
 
-   const userBasicData =await dbs[dbName](id);
+   const userBasicData =await dbs[valueReturnedFromCentral](id);
    const userPersonalData =await vault(id);
 // 
     return {
@@ -37,18 +37,12 @@ import { central, db1, db2, db3, vault } from "./databases.mjs";
             name:userBasicData.company.name,
             catchPhase:userBasicData.company.catchPhase,
             bs:userBasicData.company.bs,
-                    },
-                  
+                    },                  
           };
         
-} 
-
-catch (error) {
+} catch (error) {
     return Promise.reject(`Error retrieving user data :${error.message}`);
  }
-
-
-
 }
 
 
