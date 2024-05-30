@@ -9,15 +9,13 @@ import { central, db1, db2, db3, vault } from "./databases.mjs";
   };
   try{
     //determine which database to use for the give ID
-     const dbName = await central(id);
-  
+     const dbName = await central(1);   
+    console.log(dbName)
     if (!dbs[dbName]) throw new Error (`Database ${dbName} not found`);
 
-   //fetch data from both database in pararel
    const userBasicData =await dbs[dbName](id);
    const userPersonalData =await vault(id);
-//    const [userBasicData,userPersonalData] =await Promise.all([dbs[dbName](id),vault(id)]);
-
+// 
     return {
            id:id,
            name:userPersonalData.name,
@@ -39,15 +37,18 @@ import { central, db1, db2, db3, vault } from "./databases.mjs";
             name:userBasicData.company.name,
             catchPhase:userBasicData.company.catchPhase,
             bs:userBasicData.company.bs,
-                    }
+                    },
+                  
           };
+        
+} 
 
-} catch (error) {
+catch (error) {
     return Promise.reject(`Error retrieving user data :${error.message}`);
  }
 
+
+
 }
 
-export { getUserData };
-const id=3
-console.log(getUserData(id))
+
