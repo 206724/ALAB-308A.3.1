@@ -12,9 +12,13 @@ import { central, db1, db2, db3, vault } from "./databases.mjs";
      const valueReturnedFromCentral = await central(id);   
  
     if (!dbs[valueReturnedFromCentral]) throw new Error (`Database ${valueReturnedFromCentral} not found`);
+     //fetch data from both database in parallel
+     const [userBasicData,userPersonalData] =
+     await Promise.all([dbs[valueReturnedFromCentral](id),vault(id)]);
 
-   const userBasicData =await dbs[valueReturnedFromCentral](id);
-   const userPersonalData =await vault(id);
+
+     //    const userBasicData =await dbs[valueReturnedFromCentral](id);
+//    const userPersonalData =await vault(id);
 // 
     return {
            id:id,
